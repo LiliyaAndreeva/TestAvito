@@ -136,7 +136,6 @@ private extension SearchPresenter {
 			switch result {
 			case .success(let products):
 				self.allProducts = products
-				print(products)
 				DispatchQueue.main.async {
 					self.view?.update(with: self.allProducts)
 				}

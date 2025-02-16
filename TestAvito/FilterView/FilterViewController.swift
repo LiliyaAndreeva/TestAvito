@@ -7,7 +7,6 @@
 
 import UIKit
 protocol IFilterViewController: AnyObject {
-	//func updateFilteredProducts(_ products: [Product])
 }
 
 
@@ -38,9 +37,7 @@ final class FilterViewController: UIViewController {
 
 // MARK: - IFilterViewController
 extension FilterViewController: IFilterViewController {
-//	func updateFilteredProducts(_ products: [Product]) {
-//		  print("Фильтрованные продукты: \(products.count) найдено")
-//	  }
+
 }
 
 // MARK: - UIPickerViewDelegate, UIPickerViewDataSource

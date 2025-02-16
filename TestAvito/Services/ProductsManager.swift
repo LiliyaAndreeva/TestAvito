@@ -12,11 +12,9 @@ protocol IProductsManager {
 	func getCategories() -> [Category]
 	func fetchProducts(completion: @escaping (Result<[Product], ProductsErrors>) -> Void)
 	func fetchImageData(for url: URL, completion: @escaping (Result<Data, ProductsErrors>) -> Void)
-	
 	func filterByTitle(_ title: String) -> [Product]
 	func filterByPrice(_ price: Double) -> [Product]
 	func filterByPriceRange(min: Double, max: Double) -> [Product]
-	
 	func resetFilters()
 	func filterByCategoriesAndPrice(categoryIds: [Int], min: Double, max: Double) -> [Product]
 }
@@ -68,7 +66,6 @@ final class ProductsManager: IProductsManager {
 
 	func getCategories() -> [Category] {
 		let uniqueCategories = Array(Set(allProducts.map { $0.category }))
-		print("уникальнуе категории: \(uniqueCategories)")
 		return uniqueCategories.sorted { $0.name < $1.name }
 	}
 
@@ -96,5 +93,4 @@ final class ProductsManager: IProductsManager {
 	func filterByCategoriesAndPrice(categoryIds: [Int], min: Double, max: Double) -> [Product] {
 		return []
 	}
-	
 }

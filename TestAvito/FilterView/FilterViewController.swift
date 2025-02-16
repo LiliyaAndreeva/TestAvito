@@ -85,7 +85,7 @@ private extension FilterViewController {
 	}
 	func setupAddFilterButton() -> UIButton {
 		let button = UIButton(configuration: .tinted())
-		button.setTitle("Добавить фильтр", for: .normal)
+		button.setTitle(ConstantStrings.Text.addFilter, for: .normal)
 		button.configuration?.baseBackgroundColor = .systemGray5
 		button.configuration?.baseForegroundColor = .systemBlue
 		button.addTarget(self, action: #selector(addCategoryFilter), for: .touchUpInside)
@@ -96,14 +96,14 @@ private extension FilterViewController {
 		let label = UILabel()
 		label.textAlignment = .center
 		label.numberOfLines = 0
-		label.font = .systemFont(ofSize: 16, weight: .medium)
-		label.text = "Выбранные фильтры: -"
+		label.font = .systemFont(ofSize: Sizes.textSizes.normal, weight: .medium)
+		label.text = ConstantStrings.Text.selectedFilters
 		return label
 	}
 	
 	private func setupMinPriceTextField() -> UITextField {
 		let textField = UITextField()
-		textField.placeholder = "Мин. цена"
+		textField.placeholder = ConstantStrings.Text.minCost
 		textField.borderStyle = .roundedRect
 		textField.backgroundColor = .white
 		textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
@@ -114,7 +114,7 @@ private extension FilterViewController {
 	
 	func setupMaxPriceTextField() -> UITextField {
 		let textField = UITextField()
-		textField.placeholder = "Макс. цена"
+		textField.placeholder = ConstantStrings.Text.maxCost
 		textField.borderStyle = .roundedRect
 		textField.backgroundColor = .white
 		textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
@@ -126,7 +126,7 @@ private extension FilterViewController {
 	func setupApplyButton() -> UIButton {
 		let button = UIButton()
 		var config = UIButton.Configuration.filled()
-		config.title = "Применить"
+		config.title = ConstantStrings.Text.apply
 		config.baseBackgroundColor = .systemBlue
 		config.baseForegroundColor = .white
 		config.cornerStyle = .medium
@@ -152,13 +152,18 @@ private extension FilterViewController {
 				.filter { self.selectedCategoryIds.contains($0.id) }
 				.map { $0.name }
 				.joined(separator: ", ")
-			self.selectedFiltersLabel.text = "Выбранные фильтры: Категории - \(selectedCategoryNames.isEmpty ? "Не выбраны" : selectedCategoryNames)"
+			self.selectedFiltersLabel.text =
+			ConstantStrings.Text.selectedCategory +
+			(selectedCategoryNames.isEmpty ? ConstantStrings.Text.notSelected : selectedCategoryNames)
 		}
 	}
 
 	private func updateFilterButtonState(for categoryId: Int) {
 		let isCategorySelected = selectedCategoryIds.contains(categoryId)
-		addFilterButton.setTitle(isCategorySelected ? "Удалить фильтр" : "Добавить фильтр", for: .normal)
+		addFilterButton.setTitle(
+			isCategorySelected ? ConstantStrings.Text.deleteFilter : ConstantStrings.Text.addFilter,
+			for: .normal
+		)
 	}
 
 	private func updateUI() {
@@ -215,30 +220,65 @@ extension FilterViewController {
 			view.translatesAutoresizingMaskIntoConstraints = false
 		}
 
-		NSLayoutConstraint.activate([
-			pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-			pickerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+		NSLayoutConstraint.activate(
+			[
+				pickerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+				pickerView.topAnchor.constraint(
+					equalTo: view.safeAreaLayoutGuide.topAnchor,
+					constant: Sizes.Padding.normalL
+				),
 
-			addFilterButton.topAnchor.constraint(equalTo: pickerView.bottomAnchor, constant: 8),
-			addFilterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+				addFilterButton.topAnchor.constraint(equalTo: pickerView.bottomAnchor, constant: Sizes.Padding.half),
+				addFilterButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
-			selectedFiltersLabel.topAnchor.constraint(equalTo: addFilterButton.bottomAnchor, constant: 20),
-			selectedFiltersLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-			selectedFiltersLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+				selectedFiltersLabel.topAnchor.constraint(
+					equalTo: addFilterButton.bottomAnchor,
+					constant: Sizes.Padding.normalL
+				),
+				selectedFiltersLabel.leadingAnchor.constraint(
+					equalTo: view.leadingAnchor,
+					constant: Sizes.Padding.normalL
+				),
+				selectedFiltersLabel.trailingAnchor.constraint(
+					equalTo: view.trailingAnchor,
+					constant: -Sizes.Padding.normalL
+				),
 
-			minPriceTextField.topAnchor.constraint(equalTo: selectedFiltersLabel.bottomAnchor, constant: 16),
-			minPriceTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-			minPriceTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-			minPriceTextField.heightAnchor.constraint(equalToConstant: 40),
+				minPriceTextField.topAnchor.constraint(
+					equalTo: selectedFiltersLabel.bottomAnchor,
+					constant: Sizes.Padding.normal
+				),
+				minPriceTextField.leadingAnchor.constraint(
+					equalTo: view.leadingAnchor,
+					constant: Sizes.Padding.normal
+				),
+				minPriceTextField.trailingAnchor.constraint(
+					equalTo: view.trailingAnchor,
+					constant: -Sizes.Padding.normal
+				),
+				minPriceTextField.heightAnchor.constraint(equalToConstant: Sizes.heightAncor),
 
-			maxPriceTextField.topAnchor.constraint(equalTo: minPriceTextField.bottomAnchor, constant: 16),
-			maxPriceTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-			maxPriceTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-			maxPriceTextField.heightAnchor.constraint(equalToConstant: 40),
+				maxPriceTextField.topAnchor.constraint(
+					equalTo: minPriceTextField.bottomAnchor,
+					constant: Sizes.Padding.normal
+				),
+				maxPriceTextField.leadingAnchor.constraint(
+					equalTo: view.leadingAnchor,
+					constant: Sizes.Padding.normal
+				),
+				maxPriceTextField.trailingAnchor.constraint(
+					equalTo: view.trailingAnchor,
+					constant: -Sizes.Padding.normal
+				),
+				maxPriceTextField.heightAnchor.constraint(equalToConstant: Sizes.heightAncor),
 
-			applyButton.topAnchor.constraint(equalTo: maxPriceTextField.bottomAnchor, constant: 16),
-			applyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-			applyButton.heightAnchor.constraint(equalToConstant: 50)
-		])
+				applyButton.topAnchor.constraint(
+					equalTo: maxPriceTextField.bottomAnchor,
+					constant: Sizes.Padding.normal
+				),
+				applyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+				applyButton.heightAnchor.constraint(equalToConstant: Sizes.heightAncorDouble)
+			]
+		)
 	}
 }

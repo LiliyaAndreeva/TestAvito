@@ -57,7 +57,7 @@ extension CartViewController: ICartViewController {
 extension CartViewController {
 	func setupUI() {
 		view.backgroundColor = .white
-		title = "Корзина"
+		title = ConstantStrings.Text.trash
 		addSubviews()
 		setupLayout()
 		setupNavigationBarButtons()
@@ -82,19 +82,19 @@ extension CartViewController {
 
 	func setupTotalPriceLabel() -> UILabel {
 		let label = UILabel()
-		label.font = .boldSystemFont(ofSize: 18)
+		label.font = .boldSystemFont(ofSize: Sizes.textSizes.double)
 		label.textAlignment = .center
 		return label
 	}
 
 	func setupCheckoutButton() -> UIButton {
 		let button = UIButton(type: .system)
-		button.setTitle("Оформить заказ", for: .normal)
+		button.setTitle(ConstantStrings.Text.placeAnOrder, for: .normal)
 		button.setTitleColor(.white, for: .normal)
 		button.backgroundColor = .systemGreen
 		button.layer.cornerRadius = 8
 		button.titleLabel?.font = .systemFont(ofSize: Sizes.textSizes.normal, weight: .bold)
-		button.heightAnchor.constraint(equalToConstant: 40).isActive = true
+		button.heightAnchor.constraint(equalToConstant: Sizes.heightAncor).isActive = true
 		button.addTarget(self, action: #selector(checkoutTapped), for: .touchUpInside)
 		return button
 	}
@@ -102,18 +102,18 @@ extension CartViewController {
 	func setupStackView() -> UIStackView {
 		let stackView = UIStackView(arrangedSubviews: [totalPriceLabel, checkoutButton])
 		stackView.axis = .vertical
-		stackView.spacing = 8
+		stackView.spacing = Sizes.Padding.half
 		stackView.alignment = .fill
 		return stackView
 	}
 	private func setupNavigationBarButtons() {
-		let shareButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),
+		let shareButtonItem = UIBarButtonItem(image: UIImage(systemName:ConstantStrings.Images.share),
 											  style: .plain,
 											  target: self,
 											  action: #selector(shareCart))
 		navigationItem.rightBarButtonItem = shareButtonItem
 		
-		let clearButtonItem = UIBarButtonItem(image: UIImage(systemName: "trash"),
+		let clearButtonItem = UIBarButtonItem(image: UIImage(systemName: ConstantStrings.Images.trash),
 											  style: .plain,
 											  target: self,
 											  action: #selector(clearCart))
@@ -134,9 +134,9 @@ extension CartViewController {
 			tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 			tableView.bottomAnchor.constraint(equalTo: stackView.topAnchor),
 			
-			stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-			stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-			stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+			stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Sizes.Padding.normal),
+			stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Sizes.Padding.normal),
+			stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Sizes.Padding.normal)
 		])
 	}
 }
@@ -166,8 +166,14 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
 		}
 	}
 	
-	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { _, _, completion in
+	func tableView(
+		_ tableView: UITableView,
+		trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+	) -> UISwipeActionsConfiguration? {
+		let deleteAction = UIContextualAction(
+			style: .destructive,
+			title: ConstantStrings.Text.delete
+		) { _, _, completion in
 			if let item = self.presenter?.getCartItems()[indexPath.row] {
 				self.presenter?.removeAllOfProduct(item.product)
 			}

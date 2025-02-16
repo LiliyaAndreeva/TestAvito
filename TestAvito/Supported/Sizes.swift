@@ -11,6 +11,8 @@ enum Sizes {
 	static let cornerRadius: CGFloat = 8
 	static let multiplier: CGFloat = 0.8
 	static let multiplierCell: CGFloat = 2/3
+	static let heightAncor: CGFloat = 40
+	static let heightAncorDouble: CGFloat = 50
 	static let buttonHeight: CGFloat = 44
 	static let tableHeight: CGFloat = 200
 
